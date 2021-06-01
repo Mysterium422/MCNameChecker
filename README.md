@@ -1,0 +1,1 @@
+# This is an MC Name Checker. Edit the "name" constant and run the program to see if a name is available
