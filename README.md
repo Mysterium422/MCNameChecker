@@ -1,1 +1,1 @@
-# This is an MC Name Checker. Edit the "name" constant and run the program to see if a name is available
+# This is an MC Name Checker. Enter the username into console for a result

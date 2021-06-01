@@ -1,10 +1,3 @@
-/**
- * EDIT THIS CONSTANT
- */
-const name = "USERNAME"
-
-// CODE BELOW DONT TOUCH (if you don't know what you are doing at least)
-
 // namemc scrapper package
 const { lookupName } = require('namemc')
 
@@ -22,32 +15,36 @@ async function timeConverter (UNIX_timestamp) {
     return time;
 }
 
-async function main () {
+async function main (input) {
     // Fetch API Result
-    let result = await lookupName(name).catch((err) => {
+    let result = await lookupName(input).catch((err) => {
         if (err.toString().includes('Username is not in use.')) {
             console.log("Account Available")
-            process.exit()
+            return "error"
         }
         console.log("API bugged. Stacktrace below")
         console.log(err)
-        process.exit()
     })
+    if (result == "error") return
     for (let i = 0; i < result.length; i++) {
         // If someone has this name currently, name unavailable
-        if(result[i].currentName.toLowerCase() == name.toLowerCase()) {
+        if(result[i].currentName.toLowerCase() == input.toLowerCase()) {
             console.log(`Account Unavailable (${result[i].uuid})`)
-            process.exit()
+            return
         }
 
         // If someone recently changed from this name, this is when the name will be available
-        if (result[i].pastNames[result[i].pastNames.length - 2].name.toLowerCase() == name.toLowerCase()) {
+        if (result[i].pastNames[result[i].pastNames.length - 2].name.toLowerCase() == input.toLowerCase()) {
             if (result[i].pastNames[result[i].pastNames.length - 1].changedAt + 37 * 24 * 60 * 60 * 1000 > Date.now()) {
                 console.log(`Account Available on ${await timeConverter(result[i].pastNames[result[i].pastNames.length - 1].changedAt + 37 * 24 * 60 * 60 * 1000)} (${result[i].uuid})`)
-                process.exit()
+                return
             }
         }
     }
     console.log("Account Available")
 }
-main()
+
+process.stdin.on('data', (chunk) => {
+    input = chunk.toString().replace("\n", "")
+    main(input)
+})
