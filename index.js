@@ -1,7 +1,7 @@
 /**
  * EDIT THIS CONSTANT
  */
-const name = "Awesom_AA"
+const name = "USERNAME"
 
 // CODE BELOW DONT TOUCH (if you don't know what you are doing at least)
 
