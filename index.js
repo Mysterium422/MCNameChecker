@@ -24,6 +24,7 @@ async function main (input) {
         }
         console.log("API bugged. Stacktrace below")
         console.log(err)
+        return "error"
     })
     if (result == "error") return
     for (let i = 0; i < result.length; i++) {
