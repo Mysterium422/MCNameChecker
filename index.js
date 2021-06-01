@@ -1,7 +1,7 @@
 /**
  * EDIT THIS CONSTANT
  */
-const name = "Nopox"
+const name = "Awesom_AA"
 
 // CODE BELOW DONT TOUCH (if you don't know what you are doing at least)
 
@@ -23,8 +23,16 @@ async function timeConverter (UNIX_timestamp) {
 }
 
 async function main () {
-    // Fetch API Result. Says API Bugged since an error will also be thrown for no response. If other names work fine it is likely not a bug
-    let result = await lookupName(name).catch((err) => {console.log("Account Available or API bugged"); process.exit()})
+    // Fetch API Result
+    let result = await lookupName(name).catch((err) => {
+        if (err.toString().includes('Username is not in use.')) {
+            console.log("Account Available")
+            process.exit()
+        }
+        console.log("API bugged. Stacktrace below")
+        console.log(err)
+        process.exit()
+    })
     for (let i = 0; i < result.length; i++) {
         // If someone has this name currently, name unavailable
         if(result[i].currentName.toLowerCase() == name.toLowerCase()) {
@@ -42,5 +50,4 @@ async function main () {
     }
     console.log("Account Available")
 }
-
 main()
